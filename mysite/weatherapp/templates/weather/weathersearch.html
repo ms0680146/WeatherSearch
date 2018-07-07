@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天氣查詢網站</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
+    <!-- OSM Map -->
+    <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+</head>
+
+<body>
+    <section class="hero is-primary">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title" align="center"  style="color:Black">
+                    What's the weather like?
+                </h1>
+            </div>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-offset-4 is-4">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="field has-addons">
+                            <div class="control is-expanded">
+                                {{ form.name }}
+                            </div>
+                            <div class="control">
+                                <button type="submit" class="button is-info">
+                                    Find City
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% if iskeyerror %}
+    <div class="container">
+        <div class="columns">
+            <div class="column is-offset-4 is-4">
+                <p style="color:red"> Oops ! We can not find the weather data in this place !
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-offset-1 is-4">
+                    {% for city_weather in weather_data %}
+                    <div class="box">
+                        <article class="media">
+                            <div class="media-left">
+                                <figure class="image is-80x80">
+                                    <img src="http://openweathermap.org/img/w/{{ city_weather.icon }}.png" alt="Image">
+                                </figure>
+                            </div>
+                            <div class="media-content">
+                                <div class="content">
+                                    <p>
+                                        <span class="title">Location: {{ city_weather.city }}</span>
+                                        <br>
+                                        <span class="subtitle">Temperature: {{ city_weather.temperature }}° F</span>
+                                        <br>Description: {{ city_weather.description }}
+                                    </p>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="column is-offset-1 is-4">
+                        <div id="mapdiv" style=" width: 800px; height: 600px;"></div>
+                        <script>
+                                map = new OpenLayers.Map("mapdiv");
+                                map.addLayer(new OpenLayers.Layer.OSM());
+                                
+                                {% for city_weather in weather_data %}
+                                var lonLat = new OpenLayers.LonLat( {{city_weather.lon}} ,{{city_weather.lat}} ).transform(
+                                    new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+                                    map.getProjectionObject() // to Spherical Mercator Projection
+                                    );
+            
+                                var zoom=16;
+
+                                var markers = new OpenLayers.Layer.Markers( "Markers" );
+                                map.addLayer(markers);
+    
+                                markers.addMarker(new OpenLayers.Marker(lonLat));
+    
+                                map.setCenter (lonLat, zoom);
+                                
+                                {% endfor %}
+                        </script>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+        <h2 align="center"> Made by KaikaiAndy in 2018/07/07 </h2>
+    </footer>
+</body>
