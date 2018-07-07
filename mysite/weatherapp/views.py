@@ -29,14 +29,14 @@ def index(request):
 				'description' : r['weather'][0]['description'],
 				'icon' : r['weather'][0]['icon'],
 			}
-			print(city_weather)		
+			# print(city_weather)		
 			weather_data.append(city_weather)
 		except KeyError:
 			iskeyerror = True
 	#print(weather_data)
-		iskeyerror = False
 		# Create a dict to store the information and send to templates(weathersearch.html)!
 		context = {'weather_data' : weather_data, 'form' : form, 'iskeyerror' : iskeyerror} 
+		iskeyerror = False
     # Render on the templates(weathersearch.html)
 	return render(request,'weather/weathersearch.html', context)
 
