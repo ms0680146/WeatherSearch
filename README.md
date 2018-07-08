@@ -5,7 +5,7 @@ This is a weather search website!
 * 01 Python version 3.4
 * 02 Django version 1.8.16
 * 03 Sqlite3(built-in django)
-* 04 request
+* 04 Request library
 * 05 Open Weather Map (https://openweathermap.org/)
 * 06 Open Street Map (https://www.openstreetmap.org/about)
 
