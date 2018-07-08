@@ -5,9 +5,10 @@ This is a weather search website!
 * 01 Python version 3.4
 * 02 Django version 1.8.16
 * 03 Sqlite3(built-in django)
-* 04 Request library
-* 05 Open Weather Map (https://openweathermap.org/)
-* 06 Open Street Map (https://www.openstreetmap.org/about)
+* 04 CSS framework Bulma
+* 05 Request library
+* 06 Open Weather Map (https://openweathermap.org/)
+* 07 Open Street Map (https://www.openstreetmap.org/about)
 
 ## Functions
 * 01 Need a Location input widget (The weather you want to know in that place).
